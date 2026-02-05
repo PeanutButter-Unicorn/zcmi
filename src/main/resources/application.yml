@@ -1,3 +1,10 @@
 micronaut:
   application:
     name: zcmi
+    version: "@zcmiVersion@"
+  http:
+    services:
+      zendesk:
+        url:
+        token:
+        email:

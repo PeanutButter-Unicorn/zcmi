@@ -1,30 +1,23 @@
 package lol.pbu
 
-import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.ApplicationContext
-import io.micronaut.context.env.Environment
+import io.micronaut.test.extensions.spock.annotation.MicronautTest
 
-import spock.lang.AutoCleanup
-import spock.lang.Shared
-import spock.lang.Specification
+@MicronautTest
+class ZcmiCommandSpec extends ZcmiSpec {
 
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
+    void "querying version works no matter the context"(String[] args, ApplicationContext context) {
+        when:
+        def (out, err) = executeCommand(context, args)
 
-class ZcmiCommandSpec extends Specification {
+        then:
+        verifyAll {
+            out.trim() == gradleProperties.getProperty("zcmiVersion")
+            err.matches(blank)
+        }
 
-    @Shared @AutoCleanup ApplicationContext ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)
-
-    void "test zcmi with command line option"() {
-        given:
-        ByteArrayOutputStream baos = new ByteArrayOutputStream()
-        System.setOut(new PrintStream(baos))
-
-        String[] args = ['-v'] as String[]
-        PicocliRunner.run(ZcmiCommand, ctx, args)
-
-        expect:
-        baos.toString().contains('Hi!')
+        where:
+        [args, context] << [[['-V'], ['--version']], testContext.getAllContexts()].combinations()
     }
 }
 
