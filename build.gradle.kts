@@ -71,9 +71,9 @@ kotlin {
     }
 }
 
-sonarqube {
-    properties {
-        property("sonar.tests", "src/test/groovy")
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
     }
 }
 
@@ -104,9 +104,7 @@ graalvmNative.binaries {
     named("main") {
         imageName.set("zcmi")
         buildArgs.add("--color=always")
-        buildArgs.add("-march=native")
-//        buildArgs.add("-0b")
+//        buildArgs.add("-march=native")
+        buildArgs.add("-0b")
     }
 }
-
-
