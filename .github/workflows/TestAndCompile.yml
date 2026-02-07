@@ -23,9 +23,8 @@ jobs:
           native-image-pr-reports: 'true'
       - name: call gradle to run tests and then compile
         if: matrix.os == 'ubuntu-latest'
-        run: ./gradlew test sonar nativeCompile
+        run: ./gradlew build sonar
       - name: call gradle to run tests and then compile
-        if: matrix.os != 'ubuntu-latest'
         run: ./gradlew test nativeCompile
       - name: upload binary
         uses: actions/upload-artifact@v4
