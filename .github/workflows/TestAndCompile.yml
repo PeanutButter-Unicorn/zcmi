@@ -1,4 +1,4 @@
-name: Compile to Native Image
+name: GraalVM Native Image Test run and build tests
 on: [pull_request, workflow_dispatch]
 jobs:
   build:
@@ -11,6 +11,7 @@ jobs:
       ZCMI_SANDBOX_URL: ${{ secrets.ZCMI_SANDBOX_URL }}
       ZCMI_ADMIN_EMAIL: ${{ secrets.ZCMI_ADMIN_EMAIL }}
       ZCMI_ADMIN_TOKEN: ${{ secrets.ZCMI_ADMIN_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - uses: graalvm/setup-graalvm@54b4f5a65c1a84b2fdfdc2078fe43df32819e4b1 # v1.4.5
@@ -20,7 +21,20 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
           native-image-pr-reports: 'true'
-      - name: call gradle to run tests and then compile native image
+      - name: call gradle to run tests and then compile (WINDOWS)
+        if: matrix.os == 'windows-latest'
+        env:
+          # This solution found at https://github.com/graalvm/native-build-tools/issues/754#issuecomment-3450913085
+          # Needed for Windows; to resolve issue with temp folder during native image build, due to relativization
+          # problem when different drives are used, such as in GHA runners.
+          # https://github.com/graalvm/native-build-tools/issues/754
+          GRADLE_OPTS: -Djava.io.tmpdir=${{ runner.temp }}
+        run: ./gradlew test nativeCompile
+      - name: call gradle to run tests and then compile (NOT WINDOWS)
+        if: matrix.os != 'windows-latest'
+        run: ./gradlew test nativeCompile
+      - name: call gradle to run tests and then compile
+        if: matrix.os != 'ubuntu-latest'
         run: ./gradlew test nativeCompile
       - name: upload binary
         uses: actions/upload-artifact@v4
