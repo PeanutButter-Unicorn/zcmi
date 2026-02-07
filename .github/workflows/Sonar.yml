@@ -1,12 +1,9 @@
-name: Compile to Native Image
+name: Sonar
 on: [pull_request, workflow_dispatch]
 jobs:
   build:
-    name: test and compile on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+    name: Run Sonar Scan
+    runs-on: ubuntu-latest
     env:
       ZCMI_SANDBOX_URL: ${{ secrets.ZCMI_SANDBOX_URL }}
       ZCMI_ADMIN_EMAIL: ${{ secrets.ZCMI_ADMIN_EMAIL }}
@@ -18,13 +15,5 @@ jobs:
         with:
           java-version: '21'
           distribution: 'graalvm'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
-          native-image-pr-reports: 'true'
       - name: call gradle to run tests and then compile native image
-        run: ./gradlew test nativeCompile
-      - name: upload binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: zcmi-${{ matrix.os }}
-          path: build/native/nativeCompile/zcmi*
+        run: ./gradlew test sonar
