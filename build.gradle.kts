@@ -58,7 +58,7 @@ tasks.withType<ProcessResources> {
 }
 
 application {
-    mainClass = "lol.pbu.ZcmiCommand"
+    mainClass = "lol.pbu.ZcmiCommandk"
 }
 
 java {
