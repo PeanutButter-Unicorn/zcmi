@@ -94,3 +94,15 @@ graalvmNative.binaries {
 //        buildArgs.add("-Ob")
     }
 }
+
+sonar {
+    properties {
+        property("sonar.projectKey", "PeanutButter-Unicorn_zcmi")
+        property("sonar.organization", "peanutbutter-unicorn")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+        property("sonar.tests", "src/test/groovy")
+        property("sonar.junit.reportPaths", "build/reports/jacoco/test")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+    }
+}
