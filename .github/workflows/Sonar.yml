@@ -4,6 +4,8 @@ jobs:
   build:
     name: Run Sonar Scan
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     env:
       ZCMI_SANDBOX_URL: ${{ secrets.ZCMI_SANDBOX_URL }}
       ZCMI_ADMIN_EMAIL: ${{ secrets.ZCMI_ADMIN_EMAIL }}
