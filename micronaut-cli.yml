@@ -1,6 +1,6 @@
 applicationType: cli
 defaultPackage: lol.pbu
 testFramework: spock
-sourceLanguage: kotlin
+sourceLanguage: java
 buildTool: gradle_kotlin
-features: [app-name, graalvm, gradle, http-client-test, kapt, kotlin, logback, micronaut-build, picocli, picocli-kotlin-application, picocli-spock, readme, serialization-jackson, shade, spock, yaml, yaml-build]
+features: [app-name, gradle, http-client-test, java, logback, micronaut-build, picocli, picocli-java-application, picocli-spock, readme, serialization-jackson, shade, spock, yaml, yaml-build]

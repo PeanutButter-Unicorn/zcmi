@@ -19,5 +19,18 @@ class ZcmiCommandSpec extends ZcmiSpec {
         where:
         [args, context] << [[['-V'], ['--version']], testContext.getAllContexts()].combinations()
     }
-}
 
+    void "invoking with no arguments prints error"(ApplicationContext context) {
+        when:
+        def (out, err) = executeCommand(context)
+
+        then:
+        verifyAll {
+            out.matches(blank)
+            err.contains("No Command Given")
+        }
+
+        where:
+        context << testContext.getAllContexts()
+    }
+}

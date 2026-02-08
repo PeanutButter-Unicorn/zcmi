@@ -21,6 +21,9 @@ class ZcmiSpec extends Specification {
     @Shared
     def gradleProperties
 
+    @Shared
+    String ansi
+
     def setupSpec() {
         testContext = new ZcmiTestContext(
                 createContext(),
@@ -32,13 +35,17 @@ class ZcmiSpec extends Specification {
         new File('gradle.properties').withInputStream { stream ->
             gradleProperties.load(stream)
         }
-        String ansi = "\\u001B\\[[;\\d]*m"
+        ansi = "\\u001B\\[[;\\d]*m"
         blank = Pattern.compile "^\\s*\$"
         success = Pattern.compile("^${ansi}\\w+${ansi}\\s*\$")
     }
 
     def cleanupSpec() {
         testContext.close()
+    }
+
+    def errorPattern = { String errorMessage ->
+        return Pattern.quote("$ansi$errorMessage$ansi")
     }
 
     /**
