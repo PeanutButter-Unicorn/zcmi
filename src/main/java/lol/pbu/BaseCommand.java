@@ -18,22 +18,13 @@ public class BaseCommand {
     @ReflectiveAccess
     protected CommandSpec spec;
 
-
-    public void out(String message) {
-        outWriter().ifPresent(writer -> writer.println(AUTO.string(message)));
-    }
-
     public void err(String message) {
-        red(String.format("Error: %s", message));
-    }
-
-    public void red(String message) {
-        outWriter().ifPresent(writer -> writer.println(AUTO.string("@|bold,red " + message + "|@")));
+        errWriter().ifPresent(writer -> writer.println(AUTO.string("@|bold,red " + message + "|@")));
     }
 
     @NonNull
-    public Optional<PrintWriter> outWriter() {
-        return getSpec().map(commandSpec -> commandSpec.commandLine().getOut());
+    public Optional<PrintWriter> errWriter() {
+        return getSpec().map(commandSpec -> commandSpec.commandLine().getErr());
     }
 
     @NonNull

@@ -22,11 +22,12 @@ class ZcmiCommandSpec extends ZcmiSpec {
 
     void "invoking with no arguments prints error"(ApplicationContext context) {
         when:
-        String[] out = executeCommand(context)
+        def (out, err) = executeCommand(context)
 
         then:
         verifyAll {
-            out.first().contains("No Command Given")
+            out.matches(blank)
+            err.contains("No Command Given")
         }
 
         where:
