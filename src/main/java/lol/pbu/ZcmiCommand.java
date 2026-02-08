@@ -10,6 +10,7 @@ import picocli.jansi.graalvm.AnsiConsole;
 @Command(name = "zcmi", description = "...", versionProvider = ZcmiCommand.ZcmiVersionProvider.class, mixinStandardHelpOptions = true)
 public class ZcmiCommand extends BaseCommand implements Runnable {
 
+    @Generated
     public static void main(String[] args) {
         try (AnsiConsole ignored = AnsiConsole.windowsInstall()) {
             PicocliRunner.run(ZcmiCommand.class, args);
